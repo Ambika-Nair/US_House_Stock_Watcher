@@ -8,8 +8,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 import json
+import re
 
 import datetime as dt
+
+
 
 
 ### FUNCTION 1 - URL GENERATOR FUNCTION
@@ -61,6 +64,12 @@ def house_stock_data_transformer(dataframe):
     dataframe_new.columns = ['disclosure_date', 'transaction_date', 'asset_description', 'ticker', 'type',
                              'amount', 'representative', 'district', 'cap_gains_over_200_usd']
 
+
+    dataframe_new.asset_description = dataframe_new.asset_description.apply(lambda x: str(x))
+    dataframe_new.asset_description = dataframe_new.asset_description.apply(lambda x: re.sub("'","",x))
+
+    dataframe_new.representative = dataframe_new.representative.apply(lambda x: str(x))
+    dataframe_new.representative = dataframe_new.representative.apply(lambda x: re.sub("'","",x))
 
     dataframe_new['transaction_date'] = pd.to_datetime(dataframe_new['transaction_date'], yearfirst=True, errors='ignore')
 
